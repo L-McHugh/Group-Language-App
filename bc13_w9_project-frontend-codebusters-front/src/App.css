@@ -47,20 +47,20 @@
   background-color: var(--darkColor);
   display: flex;
   justify-content: center;
-  border: 5px solid #C2E7DA;
+  border: 1px solid var(--lightColor);
   border-radius: 15px;
 }
 
 .addNewButton{
   width: 15vw;
-  min-width: 175px;
-  height: 5vh;
+  height: auto;
   background-color: var(--lightColor);
   border: 1px solid var(--darkColor);
   border-radius: 5px;
   color: var(--darkColor);
   font-size: 100%;
   font-weight: bold;
+  padding: 10px;
   margin: 10px;
 }
 

@@ -11,27 +11,40 @@ const url = "http://localhost:3001/api"
 function App() {
 
   // Object/or set of objects sent to ObjectList
+  // This is the state that will be updated with the get request
   const [object, setObject] = useState([])
-  // Input sent from FilterBar for the specific get request
+
+  // Input sent from FilterBar for the specific get request 
   const [input, setInput] = useState("")
+
   // Foreign search input sent from FilterBar for the specific get request
   const [translateSearch, setTranslateSearch] = useState()
+
   // Visibility for the 'create new object' form
+  // this is the state that will be updated with the post request
   const [isVisible, setVisible] = useState()
+
   // Visibility for the 'edit object' form
   const [isEditVisible, setEditVisible] = useState()
+
   // Start page visibility 
   const [isStartPageVisible, setIsStartPageVisible] = useState(true)
+
   // Id of the object to be edited
   const [editObject, setEditObject] = useState()
+
   // State for the favourites 
   const [faveArray, setfaveArray] = useState([])
+
   // State for languages
   const [language, setLanguage] = useState('englishDefinitions')
+  
   // State that will be toggled from true to false depending on editing or adding (for validation purposes)
+  // Set to true when edit button is clicked, set to false when add button is clicked
   const [editOrAdd, setEditOrAdd] = useState(false)
+
   // state for holding object to edit to be sent to pre-populate edit forms
-  // state for holding object to edit to be sent to pre-populate edit forms
+  // this is the state that will be updated with the get request
   const [wholeEditObject, setWholeEditObject] = useState([])
 
 
@@ -116,48 +129,31 @@ function App() {
   // function that creates a new edited object (if values empty, original ones are kept) - called inside handleEdit 
 
   function createEditObject(original, newEdit) {
+    // refractured this by using a for loop and Object.keys
+    // object keys are the keys of the object that is being edited
+    // for loop iterates through the keys and checks if the value of the key is truthy
+    // if it is, it sets the value of the key in the original object to the value of the key in the newEdit object
+    // if it isn't, it keeps the original value
+    const keys = Object.keys(newEdit)
 
-    if (language === 'englishDefinitions') {
+    for (let i = 0; i < keys.length; i++){
 
-      if (newEdit.title) {
-        original[0].title = newEdit.title
-      } if (newEdit.definition) {
-        original[0].definition = newEdit.definition
-      } if (newEdit.example) {
-        original[0].example = newEdit.example
-      } if (newEdit.links) {
-        original[0].links = newEdit.links
-      } if (newEdit.week) {
-        original[0].week = newEdit.week
-      }
-    
-    } else {
+      if(newEdit[keys[i]]){
 
-      if (newEdit.englishtitle) {
-        original[0].englishtitle = newEdit.englishtitle
-      } if (newEdit.title) {
-        original[0].title = newEdit.title
-      } if (newEdit.definition) {
-        original[0].definition = newEdit.definition
-      } if (newEdit.example) {
-        original[0].example = newEdit.example
-      } if (newEdit.links) {
-        original[0].links = newEdit.links
-      } if (newEdit.week) {
-        original[0].week = newEdit.week
+        original[0][keys[i]] = newEdit[keys[i]] 
       }
     }
     return original
   }
 
   // function that toggles whether the 'Edit' box is visible or not (toggled on button click)
-
+  // called inside handleObjectState
   const handleVisibilityEdit = event => {
     setEditVisible(current => !current);
   }
   
   // delete request for specific object (handed down to object list component and then object component)
-
+  // called inside handleDelete
   async function handleDelete(id) {
     for (let i = 0; i < object.length; i++) {
       if (object[i].id === id) {
@@ -171,7 +167,7 @@ function App() {
   }
 
   // function that: if no search input, runs get all and sorts objects alphabetically by title (when clicking search button); if there is search input, runs getByTitle function
-
+  // called inside handleSearch
   async function handleClick() {
     if (!input) {
       const objects = await getAllObjects()
@@ -185,7 +181,7 @@ function App() {
   }
 
   // function that: if no translated search input, runs get all and sorts objects alphabetically by title (when clicking search button); if there is translated search input, runs getByForeignTitle function
-
+  // called inside handleTranslation
   async function handleTranslation() {
     if (!translateSearch) {
       const objects = await getAllObjects();
@@ -198,27 +194,26 @@ function App() {
     }
   }
 
-  // function that is passed down to the filter bar that takes in the state of the the text input in the main search bar 
-
+  // function that is passed down to the filter bar that takes in the state of the the text input in the main search bar  
+  // called inside handleSearch
   function handleChange(e) {
     setInput(e.target.value);
   }
 
   // function that is passed down to the filter bar that takes in the state of the the text input in the translate search bar 
-
+  // called inside handleTranslation
   function handleTranslateSearch(e) {
     setTranslateSearch(e.target.value);
   }
 
   // function that sorts the objects in ascending order (by week)
-
+  // called inside handleSort button
   function sortByWeek() {
     let sortedObjects = [...object].sort(function (a, b) { return a.week - b.week });
     setObject(sortedObjects);
   }
 
   // function that populates the new favourited items into the faveArray state (but no duplicates)
-
   function favourite(id) {
     const editFavourite = object.filter(fave => { return fave.id === id });
     if (!faveArray.includes(editFavourite[0])) {
@@ -228,13 +223,13 @@ function App() {
   }
 
   // function that displays the favourite list on button click 
-
+  // called inside handleFavourite
   function displayFavourite() {
     setObject(faveArray);
   }
 
   // change the language from a button click on either startpage or header
-
+  // called inside handleLanguage
   function handleLanguage(e) {
     setLanguage(e.target.name)
     changeStartState();
@@ -242,7 +237,7 @@ function App() {
   }
 
   // function that toggles whether the StartPage is visible or not 
-
+  // called inside handleLanguage
   const changeStartState = event => {
     if (isStartPageVisible) {
       setIsStartPageVisible(current => !current);
@@ -250,10 +245,12 @@ function App() {
   };
 
   // function that changes editOrAdd state to false (which is passed down to ObjectItem and called on edit button click)
+  // called inside handleEdit
   function editing() {
     setEditOrAdd(false)
   }
   // function that changes editOrAdd state to true (which called on add new resource button click)
+  // called inside handleAdd
   function addingNotEditing() {
     setEditOrAdd(true)
   }

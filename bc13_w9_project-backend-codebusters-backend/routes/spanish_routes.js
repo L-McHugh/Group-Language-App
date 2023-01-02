@@ -10,6 +10,14 @@ import {
         getSpanishDefinitionByEnglishTitle
 } from "../models/spanish_models.js";
 
+// error handling middleware
+// this will be called if any of the routes call next with an argument
+// to test this: http://localhost:3000/spanish/1
+
+spanishRouter.use((err, req, res, next) => {
+        console.log(err);
+        return res.status(err.code).json({ success: false, error: err });
+})
 
 spanishRouter.get("/", async (req, res) => {
         const allSpanishObject = await getSpanishDefinitions();

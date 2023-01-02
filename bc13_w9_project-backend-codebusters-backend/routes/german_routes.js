@@ -10,21 +10,26 @@ import {
     getGermanDefinitionByEnglishTitle
 } from "../models/german_models.js";
 
+// error handling middleware
+
+germanRouter.use((err, req, res, next) => {
+    console.log(err);
+    return res.status(err.code).json({ success: false, error: err });
+})
 
 germanRouter.get("/", async (req, res) => {
     const allGermanObject = await getGermanDefinitions();
     return res.json({ success: true, payload: allGermanObject });
 })
 
-
 germanRouter.get("/:title", async (req, res) => {
     const germanObject = await getGermanDefinitionByTitle(req.params.title);
-    return res.json({ success: true, payload: germanObject });
+    return res.json({ success: true, payload: germanObject })
 })
 
 germanRouter.get("/english/:title", async (req, res) => {
-    const germanObject = await getGermanDefinitionByEnglishTitle(req.params.title);
-    return res.json({ success: true, payload: germanObject })
+    const englishObject = await getGermanDefinitionByEnglishTitle(req.params.title);
+    return res.json({ success: true, payload: englishObject })
 
 })
 
@@ -40,8 +45,9 @@ germanRouter.patch("/:id", async (req, res) => {
 
 germanRouter.delete("/:id", async (req, res) => {
     const deleteGermanObject = await deleteGermanDefinition(req.params.id);
-    return res.json({ success: true, payload: deleteGermanObject })
+    return res.json({ success: true, payload: deleteGermanObject });
 })
+
 
 export default germanRouter;
 

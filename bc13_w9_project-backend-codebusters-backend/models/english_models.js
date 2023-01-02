@@ -6,6 +6,9 @@ async function getEnglishDefinitions() {
 }
 
 async function getEnglishDefinitionByTitle(title) {
+  // '%'||$1||'%' is a way to search for a string that contains the search term
+  // https://www.postgresql.org/docs/9.5/functions-matching.html
+  // it is called a "partial match" and is a common way to search for a string in a database
   const allEnglishObject = await query("SELECT * FROM englishDefinitions WHERE title ILIKE '%'||$1||'%'", [title]);
   return allEnglishObject.rows;
 }

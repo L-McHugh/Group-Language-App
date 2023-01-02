@@ -1,15 +1,12 @@
 .exitButton {
-  width: 2vw;
-  height: auto;
+  width: 5vw;
+  height: 5vh;
   background-color: var(--lightColor);
   border: 1px solid var(--darkColor);
   border-radius: 5px;
   color: var(--darkColor);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-size: 100%;
   font-weight: bold;
-  padding: 10px;
-  margin: 10px;
 }
 
 .form-items {
@@ -17,7 +14,7 @@
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  gap: 30px;
+  gap: 5vh;
   padding-left: 80%;
   padding-right: 80%;
 }
@@ -43,8 +40,6 @@
   color: var(--darkColor);
   font-size: 100%;
   font-weight: bold;
-  padding: 10px;
-  margin: 10px;
 }
 
 .addButton:hover {

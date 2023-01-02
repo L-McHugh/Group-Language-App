@@ -10,6 +10,14 @@ import {
     getFrenchDefinitionByEnglishTitle
 } from "../models/french_models.js";
 
+// adding in error handling middleware to the router so that we can use next(err) in the routes
+// did it this way so that we don't have to add it to every route
+// also added a console.log so that we can see the error in the console
+
+frenchRouter.use((err, req, res, next) => {
+    console.log(err);
+    return res.status(err.code).json({ success: false, error: err });
+})
 
 frenchRouter.get("/", async (req, res) => {
     const allFrenchObject = await getFrenchDefinitions();

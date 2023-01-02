@@ -1,5 +1,5 @@
 img {
-  width: 300px;
+  width: 30%;
   border: 2px solid var(--darkColor);
   padding: 1%;
   margin: 1%;
@@ -7,7 +7,7 @@ img {
 
 .item-container {
   display: flex;
-  width: 80%;
+  width: 80vw;
   height: auto;
   border: 3px solid var(--lightColor);
   background-color: white;
